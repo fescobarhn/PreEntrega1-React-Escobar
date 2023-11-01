@@ -1,13 +1,32 @@
-// src/components/ItemListContainer.js
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { fetchItemsByCategory } from "api.js";
 
-function ItemListContainer({ greeting }) {
-    return (
-        <div className="container mt-4">
-            <h1>{greeting}</h1>
-            {/* Aquí puedes agregar el listado de productos o cualquier otro contenido */}
+const ItemListContainer = (props) => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const category = props.category;
+
+    fetchItemsByCategory(category)
+      .then(data => setItems(data))
+      .catch(error => console.error(error));
+  }, [props.category]);
+
+  return (
+    <div className="itemsList">
+      {items.map(item => (
+        <div key={item.id} className="item">
+          <img src={item.imageURL} alt={item.name} />
+          <h2>{item.name}</h2>
+          <p>{item.description}</p>
+          <strong>${item.price}</strong>
+          <button>Agregar al Carrito</button>
+          <a href={`/product/${item.id}`}>Ver detalles</a>
         </div>
-    );
+      ))}
+    </div>
+  );
+  
 }
 
 export default ItemListContainer;

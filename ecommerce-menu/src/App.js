@@ -1,18 +1,20 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import ItemListContainer from './components/ItemListContainer';
+import ItemListContainer from './containers/ItemListContainer';
+import ItemDetailContainer from './containers/ItemDetailContainer';
 
 function App() {
-    const brand = "Mi Tienda";
-    const categories = ["Categoría 1", "Categoría 2", "Categoría 3"];
-    return (
-        <div className="App">
-            <Navbar brand={brand} categories={categories} />
-            <ItemListContainer greeting="Bienvenido a nuestra tienda!" />
-        </div>
-    );
+  return (
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={ItemListContainer} />
+        <Route path="/category/:id" component={ItemListContainer} />
+        <Route path="/item/:id" component={ItemDetailContainer} />
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
-
